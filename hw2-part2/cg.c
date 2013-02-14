@@ -98,14 +98,17 @@ mul(const double a, const double b){
 double
 dot (const double *x, const double *y, int n)
 {
+  double * prod = malloc(n * sizeof(double));
   int i;
-  double sum = 0;
-  // for (i = 0; i < n; ++i)
-  //   sum += x[i] * y[i];
-  if(scan(double* out, const double* a, const double* b, bin_operator plus, bin_operator cross, bin_operator companion) == 0)
-    return EXIT_FAILURE;
-  double* scan(const double* a, const double* b, bin_operator plus, bin_operator cross, bin_operator companion);
+  cilk_for(i = 0; i < n; ++i)
+    prod[i] = x[i] * y[i];
 
+  double * out = malloc(n * sizeof(double));
+  if(scan(out, prod, NULL, &add, NULL, NULL) == 0)
+    return EXIT_FAILURE;
+  double sum = out[n-1];
+  free(out);
+  free(prod);
   return sum;
 }
 
