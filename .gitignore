@@ -18,5 +18,8 @@
 
 #crap 
 *.h~
-*.c
+*.c~
 *.pyc
+*.pyc~
+*.py~
+.DS_Store
