@@ -17,7 +17,7 @@ cg_SRCS = driver.c csr.c csr_matvec.c cg.c timer.c
 cg_OBJS = $(cg_SRCS:.c=.o)
 cg_SCAN = scan.c scan.h
 
-cg$(EXEEXT): $(cg_OBJS)
+cg$(EXEEXT): $(cg_OBJS) $(cg_SCAN)
 	$(CC) $(COPTFLAGS) -o $@ $(cg_OBJS) $(cg_SCAN) $(LDFLAGS)
 
 CLEANFILES += cg$(EXEEXT) $(cg_OBJS)
