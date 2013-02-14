@@ -144,6 +144,7 @@ original_dot(const double* x, const double* y, int n){
 double
 par_dot (const double* x, const double* y, int n)
 {
+  fprintf (stdout, "\n===== fooooo =====\n");
   double * prod = malloc(n * sizeof(double));
   double * out = malloc(n * sizeof(double));
   int i;
