@@ -65,7 +65,7 @@ csr_matvec__recspawn (double* y, const csr_t* A, const double* x)
 
 // here are the operators needed to implement a matvec segscan
 double
-add(const double a, const double b){
+plus(const double a, const double b){
   return a + b;
 }
 
@@ -81,12 +81,12 @@ companion(const double a, const double b){
 
 // f = [1 if i in ptr else 0 for i in range(len(val))]
 int
-calc_flags(int* out, const int* ptr, const unsigned int size_ptr, const unsigned int size_out) {
+calc_flags(double* out, const int* ptr, const unsigned int size_ptr, const unsigned int size_out) {
   int i = 0;
   
   _Cilk_for(i = 0; i <  size_ptr; ++i) {
     if (ptr[i] < size_out)
-      out[ptr[i]] = 1
+      out[ptr[i]] = 1;
   }
   
   return EXIT_SUCCESS;
@@ -132,21 +132,19 @@ csr_matvec__segscan (double* y, const csr_t* A, const double* x)
   double* flags = (double*) calloc(A->nnz, sizeof(double));
   double* values = (double*) malloc(A->nnz*sizeof(double));
   double* out = (double*) malloc(A->nnz*sizeof(double));
-  int ret = EXIT_SUCCESS;
   
   calc_flags(flags, A->ptr, A->m, A->nnz);
   calc_values(values, A->val, x, A->ind, A->nnz);
-  if((ret = scan(out, flags, values, n, &add, &cross, &companion)) == EXIT_SUCCESS) {
+  if(scan(out, flags, values, A->nnz, &plus, &cross, &companion) == EXIT_SUCCESS) {
     int i = 0;
     _Cilk_for(i = 1; i < A->m; ++i) {
-      y[i-1] = out[ptr[i]-1];
+      y[i-1] = out[A->ptr[i]-1];
     }
   }
   
   free(flags);
   free(values);
   free(out);
-  return ret;
 }
 
 /* eof */
