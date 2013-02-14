@@ -17,6 +17,9 @@
 #include "cg.h"
 #include "scan.h"
 
+int calc_flags(int* out, const int* ptr, const unsigned int size);
+int calc_values(int* out, const double* val, const double* x, const int* ind, const unsigned int size)
+
 int
 cg (matvec_t matvec, const csr_t* Adata, const double* b,
     double *x, double rtol, int n, double* rhist, int maxiter)
@@ -110,6 +113,34 @@ dot (const double *x, const double *y, int n)
   free(out);
   free(prod);
   return sum;
+}
+
+// f = [1 if i in ptr else 0 for i in range(len(val))]
+int calc_flags(int* out, const int* ptr, const unsigned int size) {
+  int i = 0;
+  int j = 0;
+  
+  cilk_for(i = 0; i <  size; i++) {
+    if (i == ptr[j]) {
+      out[i] = 1;
+      j++;
+    } else {
+      out[i] = 0;
+    }  
+  }
+  
+  return EXIT_SUCCESS;
+}
+
+// a = [val[i]*x[ind[i]] for i in range(len(val))]
+int calc_values(int* out, const double* val, const double* x, const int* ind, const unsigned int size) {
+  int i = 0;
+  
+  cilk_for(i = 0; i <  size; i++) {
+    out[i] = val[i]*x[ind[i]];
+  }
+  
+  return EXIT_SUCCESS;
 }
 
 /* eof */
