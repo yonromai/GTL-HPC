@@ -7,6 +7,6 @@
 
 typedef double (*bin_operator) (const double a, const double b);
 
-int scan(double* out, const double* a, const double* b, bin_operator plus, bin_operator cross, bin_operator companion);
+int scan(double* out, const double* a, const double* b, const unsigned int size, bin_operator plus, bin_operator cross, bin_operator companion);
 
 #endif
