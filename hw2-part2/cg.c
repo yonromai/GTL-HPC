@@ -18,7 +18,7 @@
 #include "scan.h"
 
 int calc_flags(int* out, const int* ptr, const unsigned int size);
-int calc_values(int* out, const double* val, const double* x, const int* ind, const unsigned int size)
+int calc_values(int* out, const double* val, const double* x, const int* ind, const unsigned int size);
 
 int
 cg (matvec_t matvec, const csr_t* Adata, const double* b,
