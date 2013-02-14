@@ -93,6 +93,11 @@ void
 axpy (double* dest, double alpha, const double* x, const double* y, int n)
 {
   int i;
+  
+  #if defined (DEBUG_ME)
+    fprintf (stderr, "Calling axpy");
+  #endif
+  
   cilk_for(i = 0; i < n; ++i)
     dest[i] = alpha * x[i] + y[i];
 
