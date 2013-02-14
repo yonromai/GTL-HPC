@@ -15,6 +15,7 @@
 #include <math.h>
 
 #include "cg.h"
+#include "scan.h"
 
 int
 cg (matvec_t matvec, const csr_t* Adata, const double* b,
@@ -79,8 +80,19 @@ void
 axpy (double* dest, double alpha, const double* x, const double* y, int n)
 {
   int i;
-  for (i = 0; i < n; ++i)
+  cilk_for(i = 0; i < n; ++i)
     dest[i] = alpha * x[i] + y[i];
+}
+
+// here are the operators needed by our generic scan implementation
+double
+add(const double a, const double b){
+  return a + b;
+}
+
+double
+mul(const double a, const double b){
+  return a * b;
 }
 
 double
@@ -88,8 +100,12 @@ dot (const double *x, const double *y, int n)
 {
   int i;
   double sum = 0;
-  for (i = 0; i < n; ++i)
-    sum += x[i] * y[i];
+  // for (i = 0; i < n; ++i)
+  //   sum += x[i] * y[i];
+  if(scan(double* out, const double* a, const double* b, bin_operator plus, bin_operator cross, bin_operator companion) == 0)
+    return EXIT_FAILURE;
+  double* scan(const double* a, const double* b, bin_operator plus, bin_operator cross, bin_operator companion);
+
   return sum;
 }
 
