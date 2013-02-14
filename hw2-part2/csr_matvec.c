@@ -65,7 +65,7 @@ csr_matvec__recspawn (double* y, const csr_t* A, const double* x)
 
 // here are the operators needed to implement a matvec segscan
 double
-add(const double a, const double b){
+plus(const double a, const double b){
   return a + b;
 }
 
@@ -135,7 +135,7 @@ csr_matvec__segscan (double* y, const csr_t* A, const double* x)
   
   calc_flags(flags, A->ptr, A->m, A->nnz);
   calc_values(values, A->val, x, A->ind, A->nnz);
-  if(scan(out, flags, values, A->nnz, &add, &cross, &companion) == EXIT_SUCCESS) {
+  if(scan(out, flags, values, A->nnz, &plus, &cross, &companion) == EXIT_SUCCESS) {
     int i = 0;
     _Cilk_for(i = 1; i < A->m; ++i) {
       y[i-1] = out[A->ptr[i]-1];
