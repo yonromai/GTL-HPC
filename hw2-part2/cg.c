@@ -101,7 +101,7 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
   fprintf (stderr, "Calling axpy");
 #endif
   
-  cilk_for(i = 0; i < n; ++i){
+  _Cilk_for(i = 0; i < n; ++i){
     dest[i] = alpha * x[i] + y[i];
   }
 
@@ -149,7 +149,7 @@ par_dot (const double* x, const double* y, int n)
   int i;
   double result;
   
-  cilk_for(i = 0; i < n; ++i) {
+  _Cilk_for(i = 0; i < n; ++i) {
     prod[i] = x[i] * y[i];
   }
   
