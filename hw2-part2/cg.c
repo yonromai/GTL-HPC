@@ -77,11 +77,24 @@ cg (matvec_t matvec, const csr_t* Adata, const double* b,
 }
 
 void
+original_axpy (double* dest, double alpha, const double* x, const double* y, int n)
+{
+  int i;
+  for (i = 0; i < n; ++i)
+    dest[i] = alpha * x[i] + y[i];
+}
+
+void
 axpy (double* dest, double alpha, const double* x, const double* y, int n)
 {
   int i;
   cilk_for(i = 0; i < n; ++i)
     dest[i] = alpha * x[i] + y[i];
+
+  double * dest2 = malloc(n * sizeof(double));
+  original_axpy(dest2, alpha, x, y, n);
+  for(i=0; i < n; ++i)
+    assert(dest2[i] == dest[i]);
 }
 
 // here are the operators needed by our generic scan implementation
@@ -93,6 +106,15 @@ add(const double a, const double b){
 double
 mul(const double a, const double b){
   return a * b;
+}
+
+double 
+original_dot(const double *x, const double *y, int n){
+  int i;
+  double sum = 0;
+  for (i = 0; i < n; ++i)
+    sum += x[i] * y[i];
+  return sum;
 }
 
 double
@@ -109,6 +131,10 @@ dot (const double *x, const double *y, int n)
   double sum = out[n-1];
   free(out);
   free(prod);
+
+  double expected = original_dot(x, y, n);
+  assert(sum == expected);
+
   return sum;
 }
 
