@@ -98,13 +98,18 @@ axpy (double* dest, double alpha, const double* x, const double* y, int n)
   fprintf (stderr, "Calling axpy");
 #endif
   
-  cilk_for(i = 0; i < n; ++i)
+  cilk_for(i = 0; i < n; ++i){
     dest[i] = alpha * x[i] + y[i];
+  }
 
   double * dest2 = malloc(n * sizeof(double));
   original_axpy(dest2, alpha, x, y, n);
   for(i=0; i < n; ++i)
-    assert(dest2[i] == dest[i]);
+    if(dest2[i] == dest[i]){
+      fprintf (stderr, "Error axpy: (dest2[%d] = %f) != (dest[%d] = %f)",i,dest2[i],i,dest[i]);
+      assert(dest2[i] == dest[i]);
+    }
+    
 }
 
 // here are the operators needed by our generic scan implementation
