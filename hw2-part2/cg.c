@@ -17,6 +17,8 @@
 #include "cg.h"
 #include "scan.h"
 
+#define DEBUG_ME
+
 int calc_flags(int* out, const int* ptr, const unsigned int size);
 int calc_values(int* out, const double* val, const double* x, const int* ind, const unsigned int size);
 
@@ -138,6 +140,10 @@ dot (const double *x, const double *y, int n)
   double expected = original_dot(x, y, n);
   assert(sum == expected);
 
+  #if defined (DEBUG_ME)
+    fprintf (stderr, "Called our dot, worked out!");
+  #endif
+  
   return sum;
 }
 
