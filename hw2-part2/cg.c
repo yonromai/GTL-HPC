@@ -64,10 +64,10 @@ cg (matvec_t matvec, const csr_t* Adata, const double* b,
 
     matvec (z, Adata, s);
     alpha = rnorm2_old / par_dot(s, z, n);
-    axpy (x, alpha, s, x, n);
-    axpy (r, -alpha, z, r, n);
+    par_axpy (x, alpha, s, x, n);
+    par_axpy (r, -alpha, z, r, n);
     rnorm2 = par_dot (r, r, n);
-    axpy (s, rnorm2 / rnorm2_old, s, r, n);
+    par_axpy (s, rnorm2 / rnorm2_old, s, r, n);
 
     if (rhist != NULL)
       rhist[i] = sqrt(rnorm2 / bnorm2);
