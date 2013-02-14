@@ -105,13 +105,19 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
     dest[i] = alpha * x[i] + y[i];
   }
 
+  // Peut etre que le fait qu'on y passe 2 fois plus de temps en faisant
+  // deux axpy fait qu'on se mange une erreur?
+  /* 
   double * dest2 = malloc(n * sizeof(double));
   original_axpy(dest2, alpha, x, y, n);
-  for(i=0; i < n; ++i)
+  for(i=0; i < n; ++i) {
     if(dest2[i] == dest[i]){
       fprintf (stderr, "Error axpy: (dest2[%d] = %f) != (dest[%d] = %f)",i,dest2[i],i,dest[i]);
       assert(dest2[i] == dest[i]);
     }
+   }
+   free(dest2)
+   */
     
 }
 
@@ -127,7 +133,7 @@ mul(const double a, const double b){
 }
 
 double 
-original_dot(const double *x, const double *y, int n){
+original_dot(const double* x, const double* y, int n){
   int i;
   double sum = 0;
   for (i = 0; i < n; ++i)
@@ -136,56 +142,32 @@ original_dot(const double *x, const double *y, int n){
 }
 
 double
-par_dot (const double *x, const double *y, int n)
+par_dot (const double* x, const double* y, int n)
 {
   double * prod = malloc(n * sizeof(double));
-  int i;
-  cilk_for(i = 0; i < n; ++i)
-    prod[i] = x[i] * y[i];
-
   double * out = malloc(n * sizeof(double));
-  if(scan(out, prod, NULL, n, &add, NULL, NULL) == 0)
+  int i;
+  double result;
+  
+  cilk_for(i = 0; i < n; ++i) {
+    prod[i] = x[i] * y[i];
+  }
+  
+  if(scan(out, prod, NULL, n, &add, NULL, NULL) == EXIT_FAILURE) {
     return EXIT_FAILURE;
-  double sum = out[n-1];
+  }
+  result = out[n-1];
   free(out);
   free(prod);
 
   double expected = original_dot(x, y, n);
-  assert(sum == expected);
+  assert(result == expected);
 
 #if defined (DEBUG_ME)
   fprintf (stderr, "Called our dot, worked out!");
 #endif
   
-  return sum;
-}
-
-// f = [1 if i in ptr else 0 for i in range(len(val))]
-int calc_flags(int* out, const int* ptr, const unsigned int size) {
-  int i = 0;
-  int j = 0;
-  
-  cilk_for(i = 0; i <  size; i++) {
-    if (i == ptr[j]) {
-      out[i] = 1;
-      j++;
-    } else {
-      out[i] = 0;
-    }  
-  }
-  
-  return EXIT_SUCCESS;
-}
-
-// a = [val[i]*x[ind[i]] for i in range(len(val))]
-int calc_values(int* out, const double* val, const double* x, const int* ind, const unsigned int size) {
-  int i = 0;
-  
-  cilk_for(i = 0; i <  size; i++) {
-    out[i] = val[i]*x[ind[i]];
-  }
-  
-  return EXIT_SUCCESS;
+  return result;
 }
 
 /* eof */
