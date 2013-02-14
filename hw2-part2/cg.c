@@ -144,7 +144,6 @@ original_dot(const double* x, const double* y, int n){
 double
 par_dot (const double* x, const double* y, int n)
 {
-  fprintf (stdout, "\n===== fooooo =====\n");
   double * prod = malloc(n * sizeof(double));
   double * out = malloc(n * sizeof(double));
   int i;
@@ -162,7 +161,7 @@ par_dot (const double* x, const double* y, int n)
   free(prod);
 
   double expected = original_dot(x, y, n);
-  assert(result == expected);
+  //assert(result == expected && );
 
 #if defined (DEBUG_ME)
   fprintf (stderr, "Called our dot, worked out!");
