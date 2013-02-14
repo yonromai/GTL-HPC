@@ -104,7 +104,7 @@ dot (const double *x, const double *y, int n)
     prod[i] = x[i] * y[i];
 
   double * out = malloc(n * sizeof(double));
-  if(scan(out, prod, NULL, &add, NULL, NULL) == 0)
+  if(scan(out, prod, NULL, n, &add, NULL, NULL) == 0)
     return EXIT_FAILURE;
   double sum = out[n-1];
   free(out);
