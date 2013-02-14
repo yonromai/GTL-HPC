@@ -160,11 +160,11 @@ par_dot (const double* x, const double* y, int n)
   free(out);
   free(prod);
 
-  fprintf (stdout, "test stdout\n");
-  fprintf (stdout, "test stderr\n");
+  // fprintf (stdout, "test stderr\n");
 
   double expected = original_dot(x, y, n);
-  // assert(result == expected);
+  fprintf (stdout, "expected: %f, actual: %f\n", expected, result);
+  assert(result == expected);
 
 // #if defined (DEBUG_ME)
 //   fprintf (stderr, "Called our dot, worked out!");
