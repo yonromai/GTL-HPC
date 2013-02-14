@@ -50,7 +50,8 @@ int down_sweep(Pair* c, int size) {
 	int d = 0;
 	int max_d = log(size)/log(2) - 1;
 	cilk_for (d = max_d; d > 0; --d){
-		p = 1 << (d-1);
+		int p = 1 << (d-1);
+    int i = 0;
 		cilk_for (i = (1 << d)-1; i < (size-p); i += p*2) {
 			if (gb_call_op_point) {
 				c[i+p] = op_point(c[i],c[i+p]);
