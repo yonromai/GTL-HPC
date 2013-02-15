@@ -101,7 +101,7 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 //   fprintf (stderr, "Calling axpy");
 // #endif
   
-  _Cilk_for(i = 0; i < n; ++i){
+  for(i = 0; i < n; ++i){
     dest[i] = alpha * x[i] + y[i];
   }
 
