@@ -87,8 +87,7 @@ cg (matvec_t matvec, const csr_t* Adata, const double* b,
 void
 original_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 {
-  int i;
-  for (i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i) {
     dest[i] = alpha * x[i] + y[i];
   }
 }
