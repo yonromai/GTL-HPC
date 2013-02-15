@@ -105,7 +105,7 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 
   // Peut etre que le fait qu'on y passe 2 fois plus de temps en faisant
   // deux axpy fait qu'on se mange une erreur?
-  
+  _Cilk_sync;
   double * dest2 = malloc(n * sizeof(double));
   original_axpy(dest2, alpha, x, y, n);
   
