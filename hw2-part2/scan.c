@@ -1,7 +1,5 @@
 #include "scan.h"
 
-#define my_ceil(x) (fabs(x - round(x)) < 0.00001 ? round(x) : round(x) + 1)
-
 bin_operator g_plus = NULL;
 bin_operator g_cross = NULL;
 bin_operator g_companion = NULL;
@@ -77,7 +75,7 @@ int down_sweep(Pair* c, int size) {
 int scan(double* out, const double* a, const double* b, const unsigned int size, bin_operator plus, bin_operator cross, bin_operator companion) {
 	Pair* c = NULL;
 	int t_real_size = size;
-  int t_size = 1 << (int)my_ceil(log(size)/log(2)); // make sure our array has a power of 2 len
+  int t_size = 1 << (int)ceil(log(size)/log(2)); // make sure our array has a power of 2 len
 
 	if ((c = (Pair*) malloc (sizeof(Pair)*t_size)) == NULL) {
 		return EXIT_FAILURE;
