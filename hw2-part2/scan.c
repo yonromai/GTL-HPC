@@ -75,8 +75,7 @@ int down_sweep(Pair* c, int size) {
 int scan(double* out, const double* a, const double* b, const unsigned int size, bin_operator plus, bin_operator cross, bin_operator companion) {
 	Pair* c = NULL;
 	int t_real_size = size;
-  int t_size = 1 << (int)ceil(log(self.true_size)/log(2)); // make sure our array has a power of 2 len
-  
+  int t_size = 1 << (int)ceil(log(size)/log(2)); // make sure our array has a power of 2 len
 
 	if ((c = (Pair*) malloc (sizeof(Pair)*t_size)) == NULL) {
 		return EXIT_FAILURE;
@@ -93,8 +92,8 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	g_cross = cross;
 	g_companion = (companion == NULL) ? cross : companion;
 	
-	up_sweep(c, t_real_size);
-	down_sweep(c, t_real_size);
+	up_sweep(c, t_size);
+	down_sweep(c, t_size);
 	
 	_Cilk_for (int i = 0; i < t_real_size; ++i) {
 		out[i] = gb_call_op_point ? c[i].second : c[i].first;
