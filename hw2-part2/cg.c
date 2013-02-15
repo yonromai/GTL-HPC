@@ -90,7 +90,7 @@ original_axpy (double* dest, double alpha, const double* x, const double* y, int
   int i;
   for (i = 0; i < n; ++i) {
     dest[i] = alpha * x[i] + y[i];
-    fprintf (stderr, "a[%d]: %f, b[%d]: %f\n", i, a[i], i, b[i]);
+    fprintf (stderr, "x[%d]: %f, y[%d]: %f\n", i, x[i], i, y[i]);
   }
 }
 
