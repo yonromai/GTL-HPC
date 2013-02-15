@@ -115,7 +115,7 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
       fprintf (stderr, "ERROR - PAR_AXPY: expected[i]: %f, actual[i]: %f\n", dest2[i], dest[i]);
     }
    }
-   free(dest2)
+   free(dest2);
 }
 
 // here are the operators needed by our generic scan implementation
