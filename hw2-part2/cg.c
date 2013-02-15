@@ -96,14 +96,12 @@ original_axpy (double* dest, double alpha, const double* x, const double* y, int
 void
 par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 {
-  int i,j;
-  
 // #if defined (DEBUG_ME)
 //   fprintf (stderr, "Calling axpy");
 // #endif
   double beta = alpha;
   
-  _Cilk_for(i = 0; i < n; ++i){
+  _Cilk_for(int i = 0; i < n; ++i){
     dest[i] = alpha * x[i] + y[i];
   }
 
@@ -113,9 +111,9 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
   double * dest2 = malloc(n * sizeof(double));
   original_axpy(dest2, beta, x, y, n);
   
-  
-  for(j=0; j < n; ++j) {
-    if(abs(dest2[j] - dest[j]) > 0.0001){
+  // _Cilk_sync;
+  for(int j=0; j < n; ++j) {
+    if(abs(dest2[i] - dest[i]) > 0.0001){
       fprintf (stderr, "ERROR - PAR_AXPY: expected[%d]: %f, actual[%d]: %f\n", j, dest2[j], j, dest[j]);
       fprintf (stderr, "beta=%lf, alpha=%lf, x[%d]: %f, y[%d]: %f\n", beta, alpha, j, x[j], j, y[j]);
     }
