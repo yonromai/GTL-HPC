@@ -95,16 +95,9 @@ original_axpy (double* dest, double alpha, const double* x, const double* y, int
 void
 par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 {
-// #if defined (DEBUG_ME)
-//   fprintf (stderr, "Calling axpy");
-// #endif
 
-  _Cilk_sync;
-  _Cilk_for(int i = 0; i < n; ++i){
-    dest[i] = alpha * x[i] + y[i];
-  }
 
-  // Peut etre que le fait qu'on y passe 2 fois plus de temps en faisant
+    // Peut etre que le fait qu'on y passe 2 fois plus de temps en faisant
   // deux axpy fait qu'on se mange une erreur?
   _Cilk_sync;
   double * dest2 = malloc(n*sizeof(double));
@@ -112,6 +105,14 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
   
   for (int i = 0; i < n; ++i) {
     dest2[i] = alpha * x[i] + y[i];
+  }
+// #if defined (DEBUG_ME)
+//   fprintf (stderr, "Calling axpy");
+// #endif
+
+  _Cilk_sync;
+  _Cilk_for(int i = 0; i < n; ++i){
+    dest[i] = alpha * x[i] + y[i];
   }
   
   _Cilk_sync;
