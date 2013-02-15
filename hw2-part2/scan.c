@@ -83,9 +83,7 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	
 	gb_call_op_point = (cross != NULL);
 	
-	fprintf (stderr, "B:\n");
-	for (i = 0; i < size; i++)
-		fprintf (stderr, "b[%d] = %lf\n", i, b[i]);
+	fflush(stderr);
 	
 	fprintf (stderr, "A:\n");
 	for (i = 0; i < size; i++)
@@ -124,7 +122,6 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	for (i = 0; i < size; i++)
 		fprintf (stderr, "out[%d] = %lf\n", i, out[i]);
 	
-	exit(EXIT_SUCCESS);
 	free(c);
 	return EXIT_SUCCESS;
 }

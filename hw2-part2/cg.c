@@ -149,8 +149,10 @@ par_dot (const double* x, const double* y, int n)
   }
   result = out[n-1];
 
-  if(abs(expected - result) > 0.0001)
+  if(abs(expected - result) > 0.0001) {
     fprintf (stderr, "ERROR - PAR_DOT: expected: %f, actual: %f\n", expected, result);
+    exit(EXIT_SUCCESS);
+  }
 	
   free(out);
   free(prod);
