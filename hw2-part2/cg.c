@@ -22,8 +22,8 @@
 int calc_flags(int* out, const int* ptr, const unsigned int size);
 int calc_values(int* out, const double* val, const double* x, const int* ind, const unsigned int size);
 
-double par_dot (const double *x, const double *y, int n);
-void original_axpy (double* dest, double alpha, const double* x, const double* y, int n);
+double original_dot (const double *x, const double *y, int n);
+void par_axpy (double* dest, double alpha, const double* x, const double* y, int n);
 
 int
 cg (matvec_t matvec, const csr_t* Adata, const double* b,
@@ -46,12 +46,12 @@ cg (matvec_t matvec, const csr_t* Adata, const double* b,
   r = (double *)malloc (nbytes); assert (r);
   z = (double *)malloc (nbytes); assert (z);
 
-  bnorm2 = par_dot(b, b, n);
+  bnorm2 = original_dot(b, b, n);
   memset (x, 0, nbytes);
   memcpy (r, b, nbytes);
   memcpy (s, b, nbytes);
 
-  rnorm2 = par_dot (r, r, n);
+  rnorm2 = original_dot (r, r, n);
 
   i = 0;
   do {
@@ -63,11 +63,11 @@ cg (matvec_t matvec, const csr_t* Adata, const double* b,
     rnorm2_old = rnorm2;
 
     matvec (z, Adata, s);
-    alpha = rnorm2_old / par_dot(s, z, n);
-    original_axpy (x, alpha, s, x, n);
-    original_axpy (r, -alpha, z, r, n);
-    rnorm2 = par_dot (r, r, n);
-    original_axpy (s, rnorm2 / rnorm2_old, s, r, n);
+    alpha = rnorm2_old / original_dot(s, z, n);
+    par_axpy (x, alpha, s, x, n);
+    par_axpy (r, -alpha, z, r, n);
+    rnorm2 = original_dot (r, r, n);
+    par_axpy (s, rnorm2 / rnorm2_old, s, r, n);
 
     if (rhist != NULL)
       rhist[i] = sqrt(rnorm2 / bnorm2);
@@ -107,18 +107,15 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 
   // Peut etre que le fait qu'on y passe 2 fois plus de temps en faisant
   // deux axpy fait qu'on se mange une erreur?
-  /* 
+  
   double * dest2 = malloc(n * sizeof(double));
   original_axpy(dest2, alpha, x, y, n);
   for(i=0; i < n; ++i) {
-    if(dest2[i] == dest[i]){
-      fprintf (stderr, "Error axpy: (dest2[%d] = %f) != (dest[%d] = %f)",i,dest2[i],i,dest[i]);
-      assert(dest2[i] == dest[i]);
+    if(abs(dest2[i] - dest[i]) > 0.0001){
+      fprintf (stderr, "ERROR - PAR_AXPY: expected[i]: %f, actual[i]: %f\n", dest2[i], dest[i]);
     }
    }
-   free(dest2)
-   */
-    
+   free(dest2);
 }
 
 // here are the operators needed by our generic scan implementation
