@@ -113,7 +113,7 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
   for(int j=0; j < n; ++j) {
     if(abs(dest2[j] - dest[j]) > 0.0001){
       fprintf (stderr, "ERROR - PAR_AXPY: expected[%d]: %f, actual[%d]: %f\n", j, dest2[j], j, dest[j]);
-      fprintf (stderr, "beta=%lf, alpha=%lf, x[%d]: %f, y[%d]: %f\n", beta, alpha, j, x[j], j, y[j]);
+      fprintf (stderr, "alpha=%lf, x[%d]: %f, y[%d]: %f\n", alpha, j, x[j], j, y[j]);
     }
    }
    free(dest2);
