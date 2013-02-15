@@ -142,10 +142,6 @@ par_dot (const double* x, const double* y, int n)
   
   fflush(stderr);
   
-  for (int i = 0; i < n; ++i) {
-  	fprintf(stderr, "x[%d] = %lf ; y[%d] = %lf\n", i, x[i], i, y[i]);
-  }
-  
   _Cilk_for (int i = 0; i < n; ++i) {
     prod[i] = x[i] * y[i];
   }
@@ -157,6 +153,9 @@ par_dot (const double* x, const double* y, int n)
 
   if(abs(expected - result) > 0.0001) {
     fprintf (stderr, "ERROR - PAR_DOT: expected: %f, actual: %f\n", expected, result);
+    for (int i = 0; i < n; ++i) {
+			fprintf(stderr, "x[%d] = %lf ; y[%d] = %lf\n", i, x[i], i, y[i]);
+		}
     exit(0);
   }
 	
