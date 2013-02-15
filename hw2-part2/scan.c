@@ -81,22 +81,48 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	
 	gb_call_op_point = (cross != NULL);
 	
+	fprintf (stderr, "A:\n", expected, result);
+	for (int i = 0; i < size; i++)
+		fprintf (stderr, "a[%d] = %lf\n", i, a[i]);
+		
+	fprintf (stderr, "B:\n", expected, result);
+	for (int i = 0; i < size; i++)
+		fprintf (stderr, "b[%d] = %lf\n", i, b[i]);
+	
 	_Cilk_for (int i = 0; i < size; ++i) {
 		c[i].first = a[i];
 		c[i].second = gb_call_op_point?b[i]:0;
 	}
+	
+	fprintf (stderr, "C:\n", expected, result);
+	for (int i = 0; i < size; i++)
+		fprintf (stderr, "c[%d] = (%lf,%lf)\n", i, c[i].first, c[i].second);
 	
 	g_plus = plus;
 	g_cross = cross;
 	g_companion = (companion == NULL) ? cross : companion;
 	
 	up_sweep(c, size);
+	
+	fprintf (stderr, "C After Up_Sweep:\n", expected, result);
+	for (int i = 0; i < size; i++)
+		fprintf (stderr, "c[%d] = (%lf,%lf)\n", i, c[i].first, c[i].second);
+		
 	down_sweep(c, size);
+	
+	fprintf (stderr, "C After Down_Sweep:\n", expected, result);
+	for (int i = 0; i < size; i++)
+		fprintf (stderr, "c[%d] = (%lf,%lf)\n", i, c[i].first, c[i].second);
 	
 	_Cilk_for (int i = 0; i < size; ++i) {
 		out[i] = gb_call_op_point ? c[i].second : c[i].first;
 	}
 	
+	fprintf (stderr, "Out:\n", expected, result);
+	for (int i = 0; i < size; i++)
+		fprintf (stderr, "out[%d] = (%lf,%lf)\n", i, out[i]);
+	
+	exit(EXIT_SUCCESS);
 	free(c);
 	return EXIT_SUCCESS;
 }
