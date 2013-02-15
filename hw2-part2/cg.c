@@ -170,7 +170,7 @@ par_dot (const double* x, const double* y, int n)
 //   fprintf (stderr, "Called our dot, worked out!");
 // #endif
   
-  return result;
+  return expected;
 }
 
 /* eof */
