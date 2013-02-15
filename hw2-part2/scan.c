@@ -1,5 +1,4 @@
 #include "scan.h"
-#include <stdio.h>
 
 bin_operator g_plus = NULL;
 bin_operator g_cross = NULL;
@@ -73,66 +72,33 @@ int down_sweep(Pair* c, int size) {
 	 */
 }
 
-int call_scan(
-
 int scan(double* out, const double* a, const double* b, const unsigned int size, bin_operator plus, bin_operator cross, bin_operator companion) {
 	Pair* c = NULL;
-	int i = 0;
-	double* offset = NULL;
-	int t_size = size;
-	
-	if ((c = (Pair*) malloc (sizeof(Pair)*size)) == NULL) {
+	int t_real_size = size;
+  int t_size = 1 << (int)ceil(log(self.true_size)/log(2)); // make sure our array has a power of 2 len
+  
+
+	if ((c = (Pair*) malloc (sizeof(Pair)*t_size)) == NULL) {
 		return EXIT_FAILURE;
 	}
 	
 	gb_call_op_point = (cross != NULL);
-	
-	fflush(stderr);
-	
-	fprintf (stderr, "A:\n");
-	for (i = 0; i < size; i++)
-		fprintf (stderr, "a[%d] = %lf\n", i, a[i]);
-		
-	_Cilk_for (int i = 0; i < size; ++i) {
-		c[i].first = a[i];
-		c[i].second = gb_call_op_point?b[i]:0;
-	}
-	
-	fprintf (stderr, "C:\n");
-	for (i = 0; i < size; i++)
-		fprintf (stderr, "c[%d] = (%lf,%lf)\n", i, c[i].first, c[i].second);
+
+  _Cilk_for (int i = 0; i < t_size; ++i) {
+    c[i].first = i < t_real_size ? a[i] : 0;
+    c[i].second = (gb_call_op_point && (i < t_real_size))? b[i] : 0;
+  }
 	
 	g_plus = plus;
 	g_cross = cross;
 	g_companion = (companion == NULL) ? cross : companion;
 	
-	offset = (double*) malloc(size*sizeof(double));
+	up_sweep(c, t_real_size);
+	down_sweep(c, t_real_size);
 	
-	
-}
-
-int do_scan(double* out, const double* a, const double* b, const unsigned int size, bin_operator plus, bin_operator cross, bin_operator companion) {
-	
-	
-	up_sweep(c, size);
-	
-	fprintf (stderr, "C After Up_Sweep:\n");
-	for (i = 0; i < size; i++)
-		fprintf (stderr, "c[%d] = (%lf,%lf)\n", i, c[i].first, c[i].second);
-		
-	down_sweep(c, size);
-	
-	fprintf (stderr, "C After Down_Sweep:\n");
-	for (i = 0; i < size; i++)
-		fprintf (stderr, "c[%d] = (%lf,%lf)\n", i, c[i].first, c[i].second);
-	
-	_Cilk_for (i = 0; i < size; ++i) {
+	_Cilk_for (int i = 0; i < t_real_size; ++i) {
 		out[i] = gb_call_op_point ? c[i].second : c[i].first;
 	}
-	
-	fprintf (stderr, "Out:\n");
-	for (i = 0; i < size; i++)
-		fprintf (stderr, "out[%d] = %lf\n", i, out[i]);
 	
 	free(c);
 	return EXIT_SUCCESS;
