@@ -101,7 +101,7 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 // #if defined (DEBUG_ME)
 //   fprintf (stderr, "Calling axpy");
 // #endif
-  int beta = alpha;
+  double beta = alpha;
   
   _Cilk_sync;
   for(i = 0; i < n; ++i){
