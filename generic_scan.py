@@ -36,8 +36,10 @@ class Scan:
 	def scan(self):
 		if len(self.a) != len(self.b):
 			return None
+		
 		self.__up_sweep()
 		self.__down_sweep()
+		
 		return [v[1] for v in self.c]
 	
 

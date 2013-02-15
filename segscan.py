@@ -10,11 +10,11 @@ def op_cross(x,f):
 def op_companion(x,f):
 	return (x or f)
 	
-x = [5,2,3]
-mat = [[0, 3, 1],[2, 2, 0],[0, 0, 1]]
-val = [3, 1, 2, 2, 1]
-ind = [1, 2, 0, 1, 2]
-ptr = [0, 2, 4, 5]
+x = [3,2,-1,5]
+mat = [[2, 0, 0, 1],[4, 3, 0, 0],[0, 0, 7, 0],[1, 0, 1, 0]]
+val = [2,1,4,3,7,1,1]
+ind = [0,3,0,1,2,0,2]
+ptr = [0,2,4,5,7]
 
 f = [1 if i in ptr else 0 for i in range(len(val))]
 

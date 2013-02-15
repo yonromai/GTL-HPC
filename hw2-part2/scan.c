@@ -23,11 +23,11 @@ int up_sweep(Pair* c, int size) {
 	int d = 0;
 	int d_max = (int) (log(size)/log(2));
 	
-	cilk_for (d = 0; d < d_max; ++d) {
+	for (d = 0; d < d_max; ++d) {
 		int p = 1 << d; // pow(2,d)
 		int i = 0;
 		
-		cilk_for (i = p-1; i < (size-p); i += p*2){
+	  _Cilk_for (i = p-1; i < (size-p); i += p*2) {
 			if (gb_call_op_point) {
 				c[i+p] = op_point(c[i],c[i+p]);
 			} else {
@@ -49,10 +49,11 @@ int up_sweep(Pair* c, int size) {
 int down_sweep(Pair* c, int size) {
 	int d = 0;
 	int max_d = log(size)/log(2) - 1;
-	cilk_for (d = max_d; d > 0; --d){
+	
+  _Cilk_for (d = max_d; d > 0; --d) {
 		int p = 1 << (d-1);
     int i = 0;
-		cilk_for (i = (1 << d)-1; i < (size-p); i += p*2) {
+		_Cilk_for (i = (1 << d)-1; i < (size-p); i += p*2) {
 			if (gb_call_op_point) {
 				c[i+p] = op_point(c[i],c[i+p]);
 			} else {
@@ -76,7 +77,6 @@ int down_sweep(Pair* c, int size) {
 
 int scan(double* out, const double* a, const double* b, const unsigned int size, bin_operator plus, bin_operator cross, bin_operator companion) {
 	Pair* c = NULL;
-	int ret = 0;
 	int i = 0;
 	
 	if ((c = (Pair*) malloc (sizeof(Pair)*size)) == NULL) {
@@ -85,19 +85,19 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	
 	gb_call_op_point = (cross != NULL);
 	
-	cilk_for (i = 0; i < size; ++i) {
+	_Cilk_for (i = 0; i < size; ++i) {
 		c[i].first = a[i];
 		c[i].second = gb_call_op_point?b[i]:0;
 	}
 	
 	g_plus = plus;
 	g_cross = cross;
-	g_companion = (!companion) ? cross : companion;
+	g_companion = (companion == NULL) ? cross : companion;
 	
 	up_sweep(c, size);
 	down_sweep(c, size);
 	
-	cilk_for (i = 0; i < size; ++i) {
+	_Cilk_for (i = 0; i < size; ++i) {
 		out[i] = gb_call_op_point ? c[i].second : c[i].first;
 	}
 	

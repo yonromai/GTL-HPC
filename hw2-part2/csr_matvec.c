@@ -71,12 +71,12 @@ plus(const double a, const double b){
 
 double
 cross(const double a, const double b){
-  return a * b;
+  return (((int)b) == 1)?0:a;
 }
 
 double
 companion(const double a, const double b){
-  return a * b;
+  return (double) (((int)a) || ((int)b));
 }
 
 // f = [1 if i in ptr else 0 for i in range(len(val))]
@@ -103,24 +103,6 @@ calc_values(double* out, const double* val, const double* x, const int* ind, con
   
   return EXIT_SUCCESS;
 }
-
-/* x = [5,2,3]
-mat = [[0, 3, 1],[2, 2, 0],[0, 0, 1]]
-val = [3, 1, 2, 2, 1]
-ind = [1, 2, 0, 1, 2]
-ptr = [0, 2, 4, 5]
-
-f = [1 if i in ptr else 0 for i in range(len(val))]
-
-a = [val[i]*x[ind[i]] for i in range(len(val))]
-
-print a
-print f
-
-s = Scan(f, a, op_plus, op_cross, op_companion)
-c = s.scan()
-[c[ptr[i]-1] for i in range(1,len(ptr))]
-*/
 
 /* === Insert your segmented scan implementation here === */
 void
