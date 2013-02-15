@@ -111,15 +111,11 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
   double * dest2 = malloc(n * sizeof(double));
   original_axpy(dest2, alpha, x, y, n);
   for(i=0; i < n; ++i) {
-    if(dest2[i] == dest[i]){
-      fprintf (stderr, "Error axpy: (dest2[%d] = %f) != (dest[%d] = %f)",i,dest2[i],i,dest[i]);
-      if(abs(dest2[i] - dest[i]) > 0.0001)
-        fprintf (stderr, "ERROR - PAR_AXPY: expected[i]: %f, actual[i]: %f\n", dest2[i], dest[i]);
+    if(abs(dest2[i] - dest[i]) > 0.0001){
+      fprintf (stderr, "ERROR - PAR_AXPY: expected[i]: %f, actual[i]: %f\n", dest2[i], dest[i]);
     }
    }
    free(dest2)
-   
-    
 }
 
 // here are the operators needed by our generic scan implementation
