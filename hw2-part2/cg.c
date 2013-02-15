@@ -140,10 +140,6 @@ par_dot (const double* x, const double* y, int n)
   
   double expected = original_dot(x, y, n);
   
-  for(int i = 0; i < n; ++i) {
-    prod[i] = x[i] * y[i];
-  }
-  
   if(scan(out, prod, NULL, n, &add, NULL, NULL) == EXIT_FAILURE) {
     return EXIT_FAILURE;
   }
