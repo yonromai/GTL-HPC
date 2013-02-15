@@ -83,14 +83,14 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	
 	gb_call_op_point = (cross != NULL);
 	
-	fprintf (stderr, "A:\n");
-	for (i = 0; i < size; i++)
-		fprintf (stderr, "a[%d] = %lf\n", i, a[i]);
-		
 	fprintf (stderr, "B:\n");
 	for (i = 0; i < size; i++)
 		fprintf (stderr, "b[%d] = %lf\n", i, b[i]);
 	
+	fprintf (stderr, "A:\n");
+	for (i = 0; i < size; i++)
+		fprintf (stderr, "a[%d] = %lf\n", i, a[i]);
+		
 	_Cilk_for (int i = 0; i < size; ++i) {
 		c[i].first = a[i];
 		c[i].second = gb_call_op_point?b[i]:0;
