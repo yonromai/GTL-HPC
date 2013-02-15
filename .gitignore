@@ -21,5 +21,14 @@
 *.c~
 *.pyc
 *.pyc~
-*.py
+*.py~
 .DS_Store
+
+#crap 
+*/*.h~
+*/*.c~
+*/*.pyc
+*/*.pyc~
+*/*.py~
+*/.DS_Store
+*/Makefile
