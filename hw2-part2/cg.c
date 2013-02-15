@@ -103,8 +103,7 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 // #endif
   double beta = alpha;
   
-  _Cilk_sync;
-  for(i = 0; i < n; ++i){
+  _Cilk_for(i = 0; i < n; ++i){
     dest[i] = alpha * x[i] + y[i];
   }
 
