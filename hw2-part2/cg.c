@@ -22,7 +22,7 @@
 int calc_flags(int* out, const int* ptr, const unsigned int size);
 int calc_values(int* out, const double* val, const double* x, const int* ind, const unsigned int size);
 
-double original_dot (const double *x, const double *y, int n);
+double par_dot (const double *x, const double *y, int n);
 void original_axpy (double* dest, double alpha, const double* x, const double* y, int n);
 
 int
@@ -46,12 +46,12 @@ cg (matvec_t matvec, const csr_t* Adata, const double* b,
   r = (double *)malloc (nbytes); assert (r);
   z = (double *)malloc (nbytes); assert (z);
 
-  bnorm2 = original_dot(b, b, n);
+  bnorm2 = par_dot(b, b, n);
   memset (x, 0, nbytes);
   memcpy (r, b, nbytes);
   memcpy (s, b, nbytes);
 
-  rnorm2 = original_dot (r, r, n);
+  rnorm2 = par_dot (r, r, n);
 
   i = 0;
   do {
@@ -63,10 +63,10 @@ cg (matvec_t matvec, const csr_t* Adata, const double* b,
     rnorm2_old = rnorm2;
 
     matvec (z, Adata, s);
-    alpha = rnorm2_old / original_dot(s, z, n);
+    alpha = rnorm2_old / par_dot(s, z, n);
     original_axpy (x, alpha, s, x, n);
     original_axpy (r, -alpha, z, r, n);
-    rnorm2 = original_dot (r, r, n);
+    rnorm2 = par_dot (r, r, n);
     original_axpy (s, rnorm2 / rnorm2_old, s, r, n);
 
     if (rhist != NULL)
