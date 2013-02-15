@@ -98,7 +98,6 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 // #if defined (DEBUG_ME)
 //   fprintf (stderr, "Calling axpy");
 // #endif
-  double beta = alpha;
   
   _Cilk_for(int i = 0; i < n; ++i){
     dest[i] = alpha * x[i] + y[i];
@@ -108,9 +107,9 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
   // deux axpy fait qu'on se mange une erreur?
   
   double * dest2 = malloc(n * sizeof(double));
-  original_axpy(dest2, beta, x, y, n);
+  original_axpy(dest2, alpha, x, y, n);
   
-  // _Cilk_sync;
+  _Cilk_sync;
   for(int j=0; j < n; ++j) {
     if(abs(dest2[j] - dest[j]) > 0.0001){
       fprintf (stderr, "ERROR - PAR_AXPY: expected[%d]: %f, actual[%d]: %f\n", j, dest2[j], j, dest[j]);
