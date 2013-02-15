@@ -136,12 +136,11 @@ par_dot (const double* x, const double* y, int n)
 {
   double * prod = malloc(n * sizeof(double));
   double * out = malloc(n * sizeof(double));
-  int i;
   double result;
   
   double expected = original_dot(x, y, n);
   
-  _Cilk_for(i = 0; i < n; ++i) {
+  for(int i = 0; i < n; ++i) {
     prod[i] = x[i] * y[i];
   }
   
