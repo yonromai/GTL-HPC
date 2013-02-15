@@ -1,4 +1,5 @@
 #include "scan.h"
+#include <stdio.h>
 
 bin_operator g_plus = NULL;
 bin_operator g_cross = NULL;
