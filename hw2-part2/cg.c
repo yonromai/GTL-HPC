@@ -88,8 +88,10 @@ void
 original_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 {
   int i;
-  for (i = 0; i < n; ++i)
+  for (i = 0; i < n; ++i) {
     dest[i] = alpha * x[i] + y[i];
+    fprintf (stderr, "x[%d]: %f, y[%d]: %f\n", i, x[i], i, y[i]);
+  }
 }
 
 void
@@ -102,6 +104,7 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 // #endif
   
   for(i = 0; i < n; ++i){
+  	fprintf (stderr, "x[%d]: %f, y[%d]: %f\n", i, x[i], i, y[i]);
     dest[i] = alpha * x[i] + y[i];
   }
 
@@ -109,6 +112,7 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
   // deux axpy fait qu'on se mange une erreur?
   
   double * dest2 = malloc(n * sizeof(double));
+  
   original_axpy(dest2, alpha, x, y, n);
   for(i=0; i < n; ++i) {
     if(abs(dest2[i] - dest[i]) > 0.0001){
