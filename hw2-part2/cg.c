@@ -138,9 +138,9 @@ par_dot (const double* x, const double* y, int n)
   double * out = malloc(n * sizeof(double));
   double result;
   
-  double expected = original_dot(x, y, n);
+  // double expected = original_dot(x, y, n);
   
-  fflush(stderr);
+  // fflush(stderr);
   
   _Cilk_for (int i = 0; i < n; ++i) {
     prod[i] = x[i] * y[i];
@@ -151,20 +151,20 @@ par_dot (const double* x, const double* y, int n)
   }
   result = out[n-1];
 
-  if(abs(expected - result) > 0.0001) {
-    fprintf (stderr, "ERROR - PAR_DOT: expected: %f, actual: %f\n", expected, result);
-    for (int i = 0; i < n; ++i) {
-			fprintf(stderr, "x[%d] = %lf ; y[%d] = %lf\n", i, x[i], i, y[i]);
-		}
-    exit(0);
-  } else {
-  	fprintf(stderr, "Success\n");
-  }
+  // if(abs(expected - result) > 0.0001) {
+  //   fprintf (stderr, "ERROR - PAR_DOT: expected: %f, actual: %f\n", expected, result);
+  //   for (int i = 0; i < n; ++i) {
+		// 	fprintf(stderr, "x[%d] = %lf ; y[%d] = %lf\n", i, x[i], i, y[i]);
+		// }
+  //   exit(0);
+  // } else {
+  // 	fprintf(stderr, "Success\n");
+  // }
 	
   free(out);
   free(prod);
 	
-  return expected;
+  return result;//expected;
 }
 
 /* eof */
