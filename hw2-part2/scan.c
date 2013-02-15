@@ -73,9 +73,13 @@ int down_sweep(Pair* c, int size) {
 	 */
 }
 
+int call_scan(
+
 int scan(double* out, const double* a, const double* b, const unsigned int size, bin_operator plus, bin_operator cross, bin_operator companion) {
 	Pair* c = NULL;
 	int i = 0;
+	double* offset = NULL;
+	int t_size = size;
 	
 	if ((c = (Pair*) malloc (sizeof(Pair)*size)) == NULL) {
 		return EXIT_FAILURE;
@@ -101,6 +105,14 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	g_plus = plus;
 	g_cross = cross;
 	g_companion = (companion == NULL) ? cross : companion;
+	
+	offset = (double*) malloc(size*sizeof(double));
+	
+	
+}
+
+int do_scan(double* out, const double* a, const double* b, const unsigned int size, bin_operator plus, bin_operator cross, bin_operator companion) {
+	
 	
 	up_sweep(c, size);
 	
