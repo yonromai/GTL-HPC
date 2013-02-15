@@ -12,13 +12,12 @@ all: cg$(EXEEXT)
 
 #=======================================================================
 
-cg_HDRS = csr.h cg.h timer.h cycle.h
-cg_SRCS = driver.c csr.c csr_matvec.c cg.c timer.c
+cg_HDRS = csr.h cg.h timer.h cycle.h scan.h
+cg_SRCS = driver.c csr.c csr_matvec.c cg.c timer.c scan.c
 cg_OBJS = $(cg_SRCS:.c=.o)
-cg_SCAN = scan.c scan.h
 
-cg$(EXEEXT): $(cg_OBJS) $(cg_SCAN)
-	$(CC) $(COPTFLAGS) -o $@ $(cg_OBJS) $(cg_SCAN) $(LDFLAGS)
+cg$(EXEEXT): $(cg_OBJS)
+	$(CC) $(COPTFLAGS) -o $@ $(cg_OBJS) $(LDFLAGS)
 
 CLEANFILES += cg$(EXEEXT) $(cg_OBJS)
 CLEANFILES += rhist__sequential.out
