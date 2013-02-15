@@ -157,6 +157,8 @@ par_dot (const double* x, const double* y, int n)
 			fprintf(stderr, "x[%d] = %lf ; y[%d] = %lf\n", i, x[i], i, y[i]);
 		}
     exit(0);
+  } else {
+  	fprintf(stderr, "Success\n");
   }
 	
   free(out);
