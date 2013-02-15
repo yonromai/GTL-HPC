@@ -75,6 +75,7 @@ int down_sweep(Pair* c, int size) {
 
 int scan(double* out, const double* a, const double* b, const unsigned int size, bin_operator plus, bin_operator cross, bin_operator companion) {
 	Pair* c = NULL;
+	int i = 0;
 	
 	if ((c = (Pair*) malloc (sizeof(Pair)*size)) == NULL) {
 		return EXIT_FAILURE;
@@ -83,11 +84,11 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	gb_call_op_point = (cross != NULL);
 	
 	fprintf (stderr, "A:\n");
-	for (int i = 0; i < size; i++)
+	for (i = 0; i < size; i++)
 		fprintf (stderr, "a[%d] = %lf\n", i, a[i]);
 		
 	fprintf (stderr, "B:\n");
-	for (int i = 0; i < size; i++)
+	for (i = 0; i < size; i++)
 		fprintf (stderr, "b[%d] = %lf\n", i, b[i]);
 	
 	_Cilk_for (int i = 0; i < size; ++i) {
@@ -96,7 +97,7 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	}
 	
 	fprintf (stderr, "C:\n");
-	for (int i = 0; i < size; i++)
+	for (i = 0; i < size; i++)
 		fprintf (stderr, "c[%d] = (%lf,%lf)\n", i, c[i].first, c[i].second);
 	
 	g_plus = plus;
@@ -106,21 +107,21 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	up_sweep(c, size);
 	
 	fprintf (stderr, "C After Up_Sweep:\n");
-	for (int i = 0; i < size; i++)
+	for (i = 0; i < size; i++)
 		fprintf (stderr, "c[%d] = (%lf,%lf)\n", i, c[i].first, c[i].second);
 		
 	down_sweep(c, size);
 	
 	fprintf (stderr, "C After Down_Sweep:\n");
-	for (int i = 0; i < size; i++)
+	for (i = 0; i < size; i++)
 		fprintf (stderr, "c[%d] = (%lf,%lf)\n", i, c[i].first, c[i].second);
 	
-	_Cilk_for (int i = 0; i < size; ++i) {
+	_Cilk_for (i = 0; i < size; ++i) {
 		out[i] = gb_call_op_point ? c[i].second : c[i].first;
 	}
 	
 	fprintf (stderr, "Out:\n");
-	for (int i = 0; i < size; i++)
+	for (i = 0; i < size; i++)
 		fprintf (stderr, "out[%d] = %lf\n", i, out[i]);
 	
 	exit(EXIT_SUCCESS);
