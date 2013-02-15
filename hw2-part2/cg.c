@@ -22,7 +22,7 @@
 int calc_flags(int* out, const int* ptr, const unsigned int size);
 int calc_values(int* out, const double* val, const double* x, const int* ind, const unsigned int size);
 
-double par_dot (const double *x, const double *y, int n);
+double original_dot (const double *x, const double *y, int n);
 void par_axpy (double* dest, double alpha, const double* x, const double* y, int n);
 
 int
@@ -46,12 +46,12 @@ cg (matvec_t matvec, const csr_t* Adata, const double* b,
   r = (double *)malloc (nbytes); assert (r);
   z = (double *)malloc (nbytes); assert (z);
 
-  bnorm2 = par_dot(b, b, n);
+  bnorm2 = original_dot(b, b, n);
   memset (x, 0, nbytes);
   memcpy (r, b, nbytes);
   memcpy (s, b, nbytes);
 
-  rnorm2 = par_dot (r, r, n);
+  rnorm2 = original_dot (r, r, n);
 
   i = 0;
   do {
@@ -63,10 +63,10 @@ cg (matvec_t matvec, const csr_t* Adata, const double* b,
     rnorm2_old = rnorm2;
 
     matvec (z, Adata, s);
-    alpha = rnorm2_old / par_dot(s, z, n);
+    alpha = rnorm2_old / original_dot(s, z, n);
     par_axpy (x, alpha, s, x, n);
     par_axpy (r, -alpha, z, r, n);
-    rnorm2 = par_dot (r, r, n);
+    rnorm2 = original_dot (r, r, n);
     par_axpy (s, rnorm2 / rnorm2_old, s, r, n);
 
     if (rhist != NULL)
@@ -95,20 +95,20 @@ original_axpy (double* dest, double alpha, const double* x, const double* y, int
 void
 par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
 {
-  /* double * dest2 = malloc(n*sizeof(double));
-  original_axpy(dest2, alpha, x, y, n); */
+  double * dest2 = malloc(n*sizeof(double));
+  original_axpy(dest2, alpha, x, y, n);
 
   _Cilk_for(int i = 0; i < n; ++i){
     dest[i] = alpha * x[i] + y[i];
   }
   
-  /* for(int j=0; j < n; ++j) {
+  for(int j=0; j < n; ++j) {
     if(abs(dest2[j] - dest[j]) > 0.0001){
       fprintf (stderr, "ERROR - PAR_AXPY: expected[%d]: %f, actual[%d]: %f\n", j, dest2[j], j, dest[j]);
       fprintf (stderr, "alpha=%lf, x[%d]: %f, y[%d]: %f\n", alpha, j, x[j], j, y[j]);
     }
    }
-   free(dest2); */
+   free(dest2);
 }
 
 // here are the operators needed by our generic scan implementation
