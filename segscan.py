@@ -28,3 +28,6 @@ c = s.scan()
 print c
 print [c[ptr[i]-1] for i in range(1,len(ptr))]
 
+in_c = [1 for i in range(62)]
+s = Scan(in_c, None, op_plus, None, None)
+print s.scan()

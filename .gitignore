@@ -22,6 +22,7 @@
 *.pyc
 *.pyc~
 *.py~
+*.tmp
 .DS_Store
 
 #crap 
