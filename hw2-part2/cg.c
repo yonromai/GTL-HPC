@@ -141,7 +141,7 @@ par_dot (const double* x, const double* y, int n)
   double expected = original_dot(x, y, n);
   
   for (int i = 0; i < n; ++i) {
-  	printf("x[%d] = %lf ; y[%d] = %lf\n", i, x[i], i, y[i]);
+  	fprintf(stderr, "x[%d] = %lf ; y[%d] = %lf\n", i, x[i], i, y[i]);
   }
   
   _Cilk_for (int i = 0; i < n; ++i) {
