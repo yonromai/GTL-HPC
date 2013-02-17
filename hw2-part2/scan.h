@@ -2,7 +2,7 @@
 #define H_SCAN
 
 #include <stdlib.h>
-#include <cilk/cilk.h>
+// #include <cilk/cilk.h>
 #include <math.h>
 
 //#define _Cilk_for for
