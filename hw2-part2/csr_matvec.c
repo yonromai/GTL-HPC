@@ -119,7 +119,7 @@ csr_matvec__segscan (double* y, const csr_t* A, const double* x)
   calc_values(values, A->val, x, A->ind, A->nnz);
   if(scan(out, flags, values, A->nnz, &plus, &cross, &companion) == EXIT_SUCCESS) {
     int i = 0;
-    _Cilk_for(i = 1; i < A->m; ++i) {
+    _Cilk_for(i = 1; i <= A->m; ++i) {
       y[i-1] = out[A->ptr[i]-1];
     }
   }
