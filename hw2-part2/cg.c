@@ -151,16 +151,16 @@ par_dot (const double* x, const double* y, int n)
   }
   result = out[n-1];
 
-  if(abs(expected - result) > (fabs(expected) * 1e-9)) {
+  if(abs(expected - result) > 0.0001) {
     fprintf (stderr, "ERROR - PAR_DOT: expected: %lf, actual: %lf\n", expected, result);
     for (int i = 0; i < n; ++i) {
 			fprintf(stderr, "x[%d] = %lf ; y[%d] = %lf\n", i, x[i], i, y[i]);
 		}
     exit(0);
   } 
-  else {
-  	fprintf(stderr, "Success\n");
-  }
+  // else {
+  // 	fprintf(stderr, "Success\n");
+  // }
 	
   free(out);
   free(prod);
