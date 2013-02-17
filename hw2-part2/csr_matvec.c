@@ -104,6 +104,13 @@ calc_values(double* out, const double* val, const double* x, const int* ind, con
   return EXIT_SUCCESS;
 }
 
+void
+par_bzero(double* out, const unsigned int size){  
+  _Cilk_for(int i = 0; i <  size; ++i) {
+      out[i] = 0;
+  }
+}
+
 /* === Insert your segmented scan implementation here === */
 void
 csr_matvec__segscan (double* y, const csr_t* A, const double* x)
@@ -111,10 +118,11 @@ csr_matvec__segscan (double* y, const csr_t* A, const double* x)
   // csr_matvec__sequential (y, A, x);
   
   // We have to use flags of type double if we want to use our implementation of scan 
-  double* flags = (double*) calloc(A->nnz, sizeof(double));
+  double* flags = (double*) malloc(A->nnz*sizeof(double));//calloc(A->nnz, sizeof(double));
   double* values = (double*) malloc(A->nnz*sizeof(double));
   double* out = (double*) malloc(A->nnz*sizeof(double));
   
+  par_bzero(flags, A->nnz);
   calc_flags(flags, A->ptr, A->m, A->nnz);
   calc_values(values, A->val, x, A->ind, A->nnz);
   if(scan(out, flags, values, A->nnz, &plus, &cross, &companion) == EXIT_SUCCESS) {
