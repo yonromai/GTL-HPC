@@ -2,10 +2,9 @@
 #define H_SCAN
 
 #include <stdlib.h>
-// #include <cilk/cilk.h>
 #include <math.h>
 
-//#define _Cilk_for for
+// #define _Cilk_for for
 
 typedef double (*bin_operator) (const double a, const double b);
 
