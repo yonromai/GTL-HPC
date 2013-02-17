@@ -1,7 +1,7 @@
 #PBS -q class
 #PBS -l nodes=10
 #PBS -l walltime=00:02:00
-#PBS -N example
+#PBS -N foooo_barbe
 
 # Changes to the directory we were in when we
 # submit the job:
