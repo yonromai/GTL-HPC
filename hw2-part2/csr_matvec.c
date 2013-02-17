@@ -33,7 +33,7 @@ csr_matvec__parfor (double* y, const csr_t* A, const double* x)
   assert (A);
   assert ((x && y) || !A->m);
 
-  _Cilk_for (int i = 0; i < A->m; ++i) {
+  cilk_for (int i = 0; i < A->m; ++i) {
     int k;
     double y_i = 0;
     for (k = A->ptr[i]; k < A->ptr[i+1]; ++k)
@@ -84,7 +84,7 @@ int
 calc_flags(double* out, const int* ptr, const unsigned int size_ptr, const unsigned int size_out) {
   int i = 0;
   
-  _Cilk_for(i = 0; i <  size_ptr; ++i) {
+  cilk_for(i = 0; i <  size_ptr; ++i) {
     if (ptr[i] < size_out)
       out[ptr[i]] = 1;
   }
@@ -97,7 +97,7 @@ int
 calc_values(double* out, const double* val, const double* x, const int* ind, const unsigned int size) {
   int i = 0;
   
-  _Cilk_for(i = 0; i <  size; ++i) {
+  cilk_for(i = 0; i <  size; ++i) {
     out[i] = val[i]*x[ind[i]];
   }
   
@@ -106,7 +106,7 @@ calc_values(double* out, const double* val, const double* x, const int* ind, con
 
 void
 par_bzero(double* out, const unsigned int size){  
-  _Cilk_for(int i = 0; i <  size; ++i) {
+  cilk_for(int i = 0; i <  size; ++i) {
       out[i] = 0;
   }
 }
@@ -127,7 +127,7 @@ csr_matvec__segscan (double* y, const csr_t* A, const double* x)
   calc_values(values, A->val, x, A->ind, A->nnz);
   if(scan(out, flags, values, A->nnz, &plus, &cross, &companion) == EXIT_SUCCESS) {
     int i = 0;
-    _Cilk_for(i = 1; i <= A->m; ++i) {
+    cilk_for(i = 1; i <= A->m; ++i) {
       y[i-1] = out[A->ptr[i]-1];
     }
   }
