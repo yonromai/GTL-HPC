@@ -22,11 +22,11 @@ Pair op_point(const Pair z1, const Pair z2) {
 int up_sweep(Pair* c, int size) {
 	int d_max = (int) (log(size)/log(2));
 	
-	cilk_for (int d = 0; d < d_max; ++d) {
+	_Cilk_for (int d = 0; d < d_max; ++d) {
 		int p = 1 << d; // pow(2,d)
 		int i = 0;
 		
-	  cilk_for (int i = p-1; i < (size-p); i += p*2) {
+	  _Cilk_for (int i = p-1; i < (size-p); i += p*2) {
 			if (gb_call_op_point) {
 				c[i+p] = op_point(c[i],c[i+p]);
 			} else {
@@ -48,7 +48,7 @@ int up_sweep(Pair* c, int size) {
 int down_sweep(Pair* c, int size) {
 	int max_d = log(size)/log(2) - 1;
 	
-  cilk_for (int d = max_d; d > 0; --d) {
+  _Cilk_for (int d = max_d; d > 0; --d) {
 		int p = 1 << (d-1);
 		for (int i = (1 << d)-1; i < (size-p); i += p*2) {
 			if (gb_call_op_point) {
@@ -83,7 +83,7 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	
 	gb_call_op_point = (cross != NULL);
 
-  cilk_for (int i = 0; i < t_size; ++i) {
+  _Cilk_for (int i = 0; i < t_size; ++i) {
     c[i].first = i < t_real_size ? a[i] : 0;
     c[i].second = (gb_call_op_point && (i < t_real_size))? b[i] : 0;
   }
@@ -95,7 +95,7 @@ int scan(double* out, const double* a, const double* b, const unsigned int size,
 	up_sweep(c, t_size);
 	down_sweep(c, t_size);
 	
-	cilk_for (int i = 0; i < t_real_size; ++i) {
+	_Cilk_for (int i = 0; i < t_real_size; ++i) {
 		out[i] = gb_call_op_point ? c[i].second : c[i].first;
 	}
 	

@@ -98,7 +98,7 @@ par_axpy (double* dest, double alpha, const double* x, const double* y, int n)
   /* double * dest2 = malloc(n*sizeof(double));
   original_axpy(dest2, alpha, x, y, n); */
 
-  cilk_for(int i = 0; i < n; ++i){
+  _Cilk_for(int i = 0; i < n; ++i){
     dest[i] = alpha * x[i] + y[i];
   }
   
@@ -142,7 +142,7 @@ par_dot (const double* x, const double* y, int n)
   
   fflush(stderr);
   
-  cilk_for (int i = 0; i < n; ++i) {
+  _Cilk_for (int i = 0; i < n; ++i) {
     prod[i] = x[i] * y[i];
   }
   
