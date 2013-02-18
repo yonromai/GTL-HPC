@@ -22,7 +22,7 @@ Pair op_point(const Pair z1, const Pair z2) {
 int up_sweep(Pair* c, int size) {
 	int d_max = (int) (log(size)/log(2));
 	
-	_Cilk_for (int d = 0; d < d_max; ++d) {
+	for (int d = 0; d < d_max; ++d) {
 		int p = 1 << d; // pow(2,d)
 		int i = 0;
 		
@@ -48,9 +48,9 @@ int up_sweep(Pair* c, int size) {
 int down_sweep(Pair* c, int size) {
 	int max_d = log(size)/log(2) - 1;
 	
-  _Cilk_for (int d = max_d; d > 0; --d) {
+  for (int d = max_d; d > 0; --d) {
 		int p = 1 << (d-1);
-		for (int i = (1 << d)-1; i < (size-p); i += p*2) {
+		_Cilk_for (int i = (1 << d)-1; i < (size-p); i += p*2) {
 			if (gb_call_op_point) {
 				c[i+p] = op_point(c[i],c[i+p]);
 			} else {
