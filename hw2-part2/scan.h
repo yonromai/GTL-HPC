@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <math.h>
+#include <cilk/cilk.h>
 
 // #define _Cilk_for for
 
