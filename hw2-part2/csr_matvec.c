@@ -83,9 +83,7 @@ companion(const double a, const double b){
 // f = [1 if i in ptr else 0 for i in range(len(val))]
 int
 calc_flags(double* out, const int* ptr, const unsigned int size_ptr, const unsigned int size_out) {
-  int i = 0;
-  
-  _Cilk_for(i = 0; i <  size_ptr; ++i) {
+  _Cilk_for(int i = 0; i <  size_ptr; ++i) {
     if (ptr[i] < size_out)
       out[ptr[i]] = 1;
   }
@@ -96,9 +94,7 @@ calc_flags(double* out, const int* ptr, const unsigned int size_ptr, const unsig
 // a = [val[i]*x[ind[i]] for i in range(len(val))]
 int
 calc_values(double* out, const double* val, const double* x, const int* ind, const unsigned int size) {
-  int i = 0;
-  
-  _Cilk_for(i = 0; i <  size; ++i) {
+  _Cilk_for(int i = 0; i <  size; ++i) {
     out[i] = val[i]*x[ind[i]];
   }
   
