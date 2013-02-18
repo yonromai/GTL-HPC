@@ -1,6 +1,6 @@
 #PBS -q class
 #PBS -l nodes=1
-#PBS -l walltime=00:00:05
+#PBS -l walltime=00:05:00
 #PBS -N foooo_barbe
 
 # Changes to the directory we were in when we
