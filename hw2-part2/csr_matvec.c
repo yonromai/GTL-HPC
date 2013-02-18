@@ -9,7 +9,7 @@
 #include <strings.h>
 #include "csr.h"
 #include "scan.h"
-#include "time.h"
+#include "timer.h"
 
 /* === Sequential implementation === */
 void
