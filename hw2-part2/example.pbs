@@ -1,5 +1,5 @@
 #PBS -q class
-#PBS -l nodes=10
+#PBS -l nodes=1
 #PBS -l walltime=00:02:00
 #PBS -N foooo_barbe
 
@@ -14,4 +14,4 @@ cd $PBS_O_WORKDIR
 echo "Script began:" `date`
 echo "Node:" `hostname`
 echo "Current directory: ${PWD}"
-./cg ~rvuduc3/matrices/s3dkt3m2/s3dkt3m2.rb
+./cg ~rvuduc3/matrices/ecology2/ecology2.rb
