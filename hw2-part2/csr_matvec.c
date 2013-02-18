@@ -33,7 +33,7 @@ csr_matvec__parfor (double* y, const csr_t* A, const double* x)
   assert (A);
   assert ((x && y) || !A->m);
 
-  _Cilk_for (int i = 0; i < A->m; ++i) {
+  cilk_for (int i = 0; i < A->m; ++i) {
     int k;
     double y_i = 0;
     for (k = A->ptr[i]; k < A->ptr[i+1]; ++k)
