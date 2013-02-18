@@ -116,20 +116,31 @@ void
 csr_matvec__segscan (double* y, const csr_t* A, const double* x)
 {
   // csr_matvec__sequential (y, A, x);
-  
+  struct stopwatch_t* timer = NULL;
+  timer = stopwatch_create();
+
   // We have to use flags of type double if we want to use our implementation of scan 
+  stopwatch_start(timer);
   double* flags = (double*) malloc(A->nnz*sizeof(double));//calloc(A->nnz, sizeof(double));
   double* values = (double*) malloc(A->nnz*sizeof(double));
   double* out = (double*) malloc(A->nnz*sizeof(double));
+  stopwatch_stop(timer);
+  g_malloc += stopwatch_elapsed (timer);
   
+  stopwatch_start(timer);
   par_bzero(flags, A->nnz);
   calc_flags(flags, A->ptr, A->m, A->nnz);
   calc_values(values, A->val, x, A->ind, A->nnz);
-  if(scan(out, flags, values, A->nnz, &plus, &cross, &companion) == EXIT_SUCCESS) {
-    int i = 0;
-    _Cilk_for(i = 1; i <= A->m; ++i) {
-      y[i-1] = out[A->ptr[i]-1];
-    }
+  stopwatch_stop(timer);
+  g_init += stopwatch_elapsed (timer);
+  
+  stopwatch_start(timer);
+  scan(out, flags, values, A->nnz, &plus, &cross, &companion);
+  stopwatch_stop(timer);
+  g_scan += stopwatch_elapsed (timer);
+
+  _Cilk_for(int i = 1; i <= A->m; ++i) {
+    y[i-1] = out[A->ptr[i]-1];
   }
   
   free(flags);

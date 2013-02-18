@@ -9,6 +9,10 @@
 
 #include "timer.h"
 struct stopwatch_t* g_timer = 0;
+long double g_malloc = 0;
+long double g_init = 0;
+long double g_scan = 0;
+
 
 /** Returns the median of an array. */
 static long double median__long_double (int n, const long double* X);
@@ -151,6 +155,11 @@ timing_driver (const csr_t* A, matvec_t matvec,
   assert (times);
 
   int num_iters = 0;
+  g_malloc = 0;
+  g_init = 0;
+  g_scan = 0;
+
+
   for (int trial = 0; trial < numtrials; ++trial) {
     setup_cg (A->m, &b, &x);
     stopwatch_start (g_timer);
@@ -184,6 +193,9 @@ timing_driver (const csr_t* A, matvec_t matvec,
 	  t_max, 1.0e-9 * num_flops / t_max);
   printf ("Average time (performance): %Lg (~ %.2Lg Gflop/s)\n",
 	  t_sum / numtrials, 1.0e-9 * num_flops / t_sum * numtrials);
+  printf ("Average malloc time: %Lg\n", g_malloc / numtrials);
+  printf ("Average scan time: %Lg\n", g_scan / numtrials);
+  printf ("Average init time: %Lg\n", g_init / numtrials);
   printf ("Median time (performance): %Lg secs (~ %.2Lg Gflop/s)\n",
 	  t_med, 1.0e-9 * num_flops / t_min);
 }
