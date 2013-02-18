@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 // #include <cilk/cilk.h>
-#define CILK_NWORKERS 24 
+#define CILK_NWORKERS 2
 // #define _Cilk_for for
 
 typedef double (*bin_operator) (const double a, const double b);
