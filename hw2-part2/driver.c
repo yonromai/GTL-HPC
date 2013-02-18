@@ -9,9 +9,6 @@
 
 #include "timer.h"
 struct stopwatch_t* g_timer = 0;
-long double g_malloc = 0;
-long double g_init = 0;
-long double g_scan = 0;
 
 
 /** Returns the median of an array. */

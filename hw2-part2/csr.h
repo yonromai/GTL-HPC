@@ -8,6 +8,11 @@
 #if !defined (INC_CSR_H)
 #define INC_CSR_H /*!< csr.h included. */
 
+
+long double g_malloc;
+long double g_init;
+long double g_scan;
+
 typedef struct
 {
   int m;       /*! no. of rows */
